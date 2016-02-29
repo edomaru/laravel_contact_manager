@@ -4,10 +4,10 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <strong>Add Contact</strong>
+    <strong>Edit Contact</strong>
   </div>
 
-  {!! Form::open(['route' => 'contacts.store']) !!}
+  {!! Form::model($contact, ['method' => 'PATCH', 'route' => ['contacts.update', $contact->id]]) !!}
 
   @include('contacts.form')
 

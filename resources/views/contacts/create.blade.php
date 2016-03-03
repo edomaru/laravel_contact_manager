@@ -7,7 +7,7 @@
     <strong>Add Contact</strong>
   </div>
 
-  {!! Form::open(['route' => 'contacts.store']) !!}
+  {!! Form::open(['route' => 'contacts.store', 'files' => true]) !!}
 
   @include('contacts.form')
 

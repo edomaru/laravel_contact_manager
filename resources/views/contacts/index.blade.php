@@ -10,8 +10,9 @@
         <td class="middle">
           <div class="media">
             <div class="media-left">
-              <a href="#">
-                <img class="media-object" src="http://placehold.it/100x100" alt="...">
+              <a href="#">       
+                <?php $photo = !is_null($contact->photo) ? $contact->photo : 'default.png' ?>         
+                {!! Html::image('uploads/' . $photo, $contact->name, ['class' => 'media-object', 'width' => 100, 'height' => 100]) !!}
               </a>
             </div>
             <div class="media-body">

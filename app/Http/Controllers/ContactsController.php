@@ -96,7 +96,8 @@ class ContactsController extends Controller
       $this->validate($request, $this->rules);
 
       $contact = Contact::find($id);
-      $contact->update($request->all());
+      $data = $this->get_request($request);
+      $contact->update($data);
 
       return redirect("contacts")->with("message", "Contact Updated!");   
     }

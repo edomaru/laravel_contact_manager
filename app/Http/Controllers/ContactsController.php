@@ -28,16 +28,51 @@ class ContactsController extends Controller
 
     public function index(Request $request)
     {
-    	if ( ($group_id = $request->get("group_id") ) ) {
-    		$contacts = Contact::where('group_id', $group_id)->orderBy("id", "desc")->paginate(5);
-    	}
-    	else {
-    		$contacts = Contact::orderBy("id", "desc")->paginate(5);
-    	}
+      $contacts = Contact::where(function($query) use ($request) {
+          // Filter by selected group
+          if ( ($group_id = $request->get("group_id") ) ) {
+            $query->where("group_id", $group_id);
+          }
+
+          // filter by keyword entered
+          if (($term = $request->get('term'))) {
+            $query->orWhere('name', 'like', '%' . $term . '%');
+            $query->orWhere('email', 'like', '%' . $term . '%');
+            $query->orWhere('company', 'like', '%' . $term . '%');
+          }
+        })
+        ->orderBy("id", "desc")
+        ->paginate(5);
 
     	return view("contacts.index", [
     		'contacts' => $contacts
     	]);
+    }
+
+    public function autocomplete(Request $request)
+    {
+      // prevent this method called by non ajax
+      if ($request->ajax())
+      {
+        $contacts = Contact::where(function($query) use ($request) {
+            // filter by keyword entered
+            if (($term = $request->get('term'))) {
+              $query->orWhere('name', 'like', '%' . $term . '%');
+              $query->orWhere('email', 'like', '%' . $term . '%');
+              $query->orWhere('company', 'like', '%' . $term . '%');
+            }
+          })
+          ->orderBy("id", "desc")
+          ->take(5)
+          ->get();
+
+        // convert to json
+          $results = [];
+        foreach ($contacts as $contact) {
+          $results[] = ['id' => $contact->id, 'value' => $contact->name];
+        }
+        return response()->json($results);
+      }
     }
 
     private function getGroups()

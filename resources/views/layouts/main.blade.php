@@ -11,6 +11,8 @@
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/jqueryui/jquery-ui.min.css" rel="stylesheet">
+    <link href="/assets/jqueryui/jquery-ui.theme.min.css" rel="stylesheet">
     <link href="/assets/css/custom.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,12 +40,24 @@
         </div>
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
+
           <div class="nav navbar-right navbar-btn">
             <a href="{{ route('contacts.create') }}" class="btn btn-default">
               <i class="glyphicon glyphicon-plus"></i>
               Add Contact
             </a>
           </div>
+          {!! Form::open(['route' => 'contacts.index', 'method' => 'GET', 'class' => 'navbar-form navbar-right', 'role' => 'search']) !!}
+            
+            <div class="input-group">
+              {!! Form::text('term', Request::get('term'), ['class' => 'form-control', 'placeholder' => 'Search...', 'id' => 'term']) !!}              
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </span>
+            </div>
+          {!! Form::close() !!}
         </div>
       </div>
     </nav>
@@ -80,5 +94,17 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/jasny-bootstrap.min.js"></script>
+    <script src="/assets/jqueryui/jquery-ui.min.js"></script>
+    <script>
+      $(function() {
+        $("#term").autocomplete({
+          source: "{{ route('contacts.autocomplete') }}",
+          minLength: 3,
+          select: function(event, ui) {
+            $("#term").val(ui.item.value);
+          }
+        });
+      });
+    </script>
   </body>
 </html>

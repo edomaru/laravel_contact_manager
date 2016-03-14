@@ -72,9 +72,9 @@
         <div class="col-md-4">
           <div class="fileinput fileinput-new" data-provides="fileinput">
             <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
-              <img src="http://placehold.it/150x150" alt="Photo">
+              <img src="{{ empty($contact->photo) ? 'http://placehold.it/150x150' : "/uploads/{$contact->photo}"}}" alt="Photo">
             </div>
-            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 150px;"></div>
             <div class="text-center">
               <span class="btn btn-default btn-file"><span class="fileinput-new">Choose Photo</span><span class="fileinput-exists">Change</span>{!! Form::file('photo') !!}</span>
               <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>

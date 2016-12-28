@@ -10,8 +10,9 @@
         <td class="middle">
           <div class="media">
             <div class="media-left">
-              <a href="#">
-                <img class="media-object" src="http://placehold.it/100x100" alt="...">
+              <a href="#">       
+                <?php $photo = !is_null($contact->photo) ? $contact->photo : 'default.png' ?>         
+                {!! Html::image('uploads/' . $photo, $contact->name, ['class' => 'media-object', 'width' => 100, 'height' => 100]) !!}
               </a>
             </div>
             <div class="media-body">
@@ -25,12 +26,15 @@
         </td>
         <td width="100" class="middle">
           <div>
-            <a href="#" class="btn btn-circle btn-default btn-xs" title="Edit">
+          {!! Form::open(['route' => ['contacts.destroy', $contact->id], 'method' => 'DELETE']) !!}
+            <a href="{{ route('contacts.edit', ['id' => $contact->id]) }}" class="btn btn-circle btn-default btn-xs" title="Edit">
               <i class="glyphicon glyphicon-edit"></i>
-            </a>
-            <a href="#" class="btn btn-circle btn-danger btn-xs" title="Edit">
+            </a>            
+            <button class="btn btn-circle btn-danger btn-xs" title="Delete" onclick="return confirm('Are You sure ?')">
               <i class="glyphicon glyphicon-remove"></i>
-            </a>
+            </button>
+
+            {!! Form::close() !!}
           </div>
         </td>
       </tr>
